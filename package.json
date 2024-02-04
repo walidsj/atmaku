@@ -1,20 +1,22 @@
 {
-  "name": "atmaturbo",
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
-  "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "prettier": "^3.1.1",
-    "turbo": "latest"
-  },
-  "packageManager": "pnpm@8.9.0",
-  "engines": {
-    "node": ">=18"
-  }
+   "name": "atmaku",
+   "private": true,
+   "scripts": {
+      "build": "turbo build",
+      "dev": "turbo dev",
+      "lint": "turbo lint",
+      "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+      "@client": "pnpm --filter @atmaku/client",
+      "@server": "pnpm --filter @atmaku/server",
+      "add:ui": "pnpm --filter @atmaku/client add:shadcn-ui",
+      "prisma": "pnpm --filter @atmaku/server exec prisma"
+   },
+   "devDependencies": {
+      "prettier": "^3.1.1",
+      "turbo": "latest"
+   },
+   "packageManager": "pnpm@8.9.0",
+   "engines": {
+      "node": ">=18"
+   }
 }
