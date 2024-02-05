@@ -1,7 +1,7 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import router from './api/router'
+import router from './app/router'
 
 const app = new Hono()
 

@@ -7,9 +7,9 @@
       "lint": "turbo lint",
       "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
       "@client": "pnpm --filter @atmaku/client",
-      "@server": "pnpm --filter @atmaku/server",
+      "@api": "pnpm --filter @atmaku/api",
       "add:ui": "pnpm --filter @atmaku/client add:shadcn-ui",
-      "prisma": "pnpm --filter @atmaku/server exec prisma"
+      "prisma": "pnpm --filter @atmaku/api exec prisma"
    },
    "devDependencies": {
       "prettier": "^3.1.1",

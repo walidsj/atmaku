@@ -16,36 +16,69 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { RiTimer2Line } from 'react-icons/ri'
-
-const loginSchema = z.object({
-   email: z.string().email(),
-   password: z.string(),
-})
+import { toast } from 'sonner'
+import { useCookies } from 'react-cookie'
+import { QueryClient, useMutation } from '@tanstack/react-query'
+import axios from '@/lib/axios'
+import { AxiosResponse, isAxiosError } from 'axios'
 
 export default function Login() {
-   const form = useForm<z.infer<typeof loginSchema>>({
-      resolver: zodResolver(loginSchema),
+   const fetch = axios()
+   const form = useForm({
       defaultValues: {
          email: '',
          password: '',
       },
    })
+   const navigate = useNavigate()
+   const [_cookies, setCookie] = useCookies(['token'])
 
-   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
-      console.log(values)
+   const login = useMutation({
+      mutationKey: ['login'],
+      mutationFn: async (data) => await fetch.post('/auth/login', data),
+      onSuccess: (res: AxiosResponse) => {
+         const queryClient = new QueryClient()
+         queryClient.setQueryData(['profile', res.data.token], res.data.user)
+
+         toast.success(res.data.message)
+         setCookie('token', res.data.token, {
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7,
+         })
+      },
+      onError: (error: any) => {
+         if (isAxiosError(error)) {
+            toast.error(error.response?.data.message)
+
+            if (error.response?.data.errors) {
+               for (const field in error.response?.data.errors) {
+                  form.setError(field as any, {
+                     message: error.response?.data.errors[field][0],
+                  })
+               }
+            }
+         }
+      },
+   })
+
+   const onSubmit = async (data: any) => {
+      await login.mutateAsync(data, {
+         onSuccess: () => navigate('/'),
+      })
    }
 
    return (
       <div className="min-h-svh flex flex-col items-center justify-center">
          <Card className="w-[400px]">
             <CardHeader>
-               <CardTitle>Login Aplikasi</CardTitle>
+               <CardTitle className="text-3xl font-extrabold">
+                  SIMKU炎
+                  <span className="text-lg ml-2 font-bold">by Atmaku</span>
+               </CardTitle>
                <CardDescription>
-                  Silakan masuk untuk mengakses Aplikasi SiMKU
+                  炎 (baca: Hono) artinya api, dan api itu menyala.
                </CardDescription>
             </CardHeader>
             <CardContent>
@@ -61,7 +94,12 @@ export default function Login() {
                            <FormItem>
                               <FormLabel>Alamat Email</FormLabel>
                               <FormControl>
-                                 <Input type="email" {...field} autoFocus />
+                                 <Input
+                                    type="email"
+                                    {...field}
+                                    autoFocus
+                                    placeholder="Alamat Email"
+                                 />
                               </FormControl>
                               <FormMessage />
                            </FormItem>
@@ -74,13 +112,17 @@ export default function Login() {
                            <FormItem>
                               <FormLabel>Password</FormLabel>
                               <FormControl>
-                                 <Input type="password" {...field} />
+                                 <Input
+                                    type="password"
+                                    {...field}
+                                    placeholder="Password"
+                                 />
                               </FormControl>
                               <FormMessage />
                            </FormItem>
                         )}
                      />
-                     <Button type="submit" size="lg" className="w-full">
+                     <Button type="submit" size="xl" className="w-full">
                         {form.formState.isSubmitting && (
                            <RiTimer2Line className="animate-spin h-4 w-4 mr-2" />
                         )}

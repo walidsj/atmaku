@@ -24,50 +24,55 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@/components/ui/select'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { RiTimer2Line } from 'react-icons/ri'
 import { toast } from 'sonner'
+import { AxiosResponse, isAxiosError } from 'axios'
+import axios from '@/lib/axios'
 
 export default function Register() {
    const navigate = useNavigate()
+   const fetch = axios()
 
-   const jabatan = useQuery({
-      queryKey: ['kategori/jabatan'],
-      queryFn: async () => {
-         const response = await fetch(
-            'http://127.0.0.1:3000/api/kategori/jabatan'
-         )
-         return response.json()
+   const form = useForm({
+      defaultValues: {
+         nama: '',
+         email: '',
+         password: '',
+         telepon: '',
+         jabatan: '',
       },
    })
 
-   const form = useForm()
+   const jabatan = useQuery({
+      queryKey: ['kategori/jabatan'],
+      queryFn: async () => await fetch.get('/kategori/jabatan'),
+   })
 
-   const onSubmit = async (values: any) => {
-      const response = await fetch('http://127.0.0.1:3000/api/auth/register', {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-         },
-         body: JSON.stringify(values),
-      })
-
-      const data = await response.json()
-
-      if (data.success) {
-         toast.success(data.message)
-         navigate('/')
-      } else {
-         if (data.errors) {
-            for (const field in data.errors) {
-               form.setError(field as any, {
-                  message: data.errors[field][0],
-               })
+   const register = useMutation({
+      mutationKey: ['login'],
+      mutationFn: async (data) => await fetch.post('/auth/register', data),
+      onSuccess: (res: AxiosResponse) => {
+         toast.success(res.data.message)
+      },
+      onError: (error: any) => {
+         if (isAxiosError(error)) {
+            toast.error(error.response?.data.message)
+            if (error.response?.data.errors) {
+               for (const field in error.response?.data.errors) {
+                  form.setError(field as any, {
+                     message: error.response?.data.errors[field][0],
+                  })
+               }
             }
-         } else {
-            toast.error(data.message)
          }
-      }
+      },
+   })
+
+   const onSubmit = async (data: any) => {
+      await register.mutateAsync(data, {
+         onSuccess: () => navigate('/login'),
+      })
    }
 
    return (
@@ -153,7 +158,7 @@ export default function Register() {
                                     </SelectTrigger>
                                  </FormControl>
                                  <SelectContent>
-                                    {jabatan.data?.map(
+                                    {jabatan.data?.data.map(
                                        (item: {
                                           value: string
                                           label: string
