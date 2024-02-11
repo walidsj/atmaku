@@ -5,15 +5,13 @@ import { Toaster } from 'sonner'
 
 const queryClient = new QueryClient()
 
-function App() {
+export default function App() {
    return (
       <CookiesProvider>
          <QueryClientProvider client={queryClient}>
             <Router />
-            <Toaster position="top-center" richColors />
+            <Toaster position="top-center" richColors closeButton />
          </QueryClientProvider>
       </CookiesProvider>
    )
 }
-
-export default App
