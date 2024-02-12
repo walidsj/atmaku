@@ -45,8 +45,8 @@ export default function Register() {
    })
 
    const jabatan = useQuery({
-      queryKey: ['kategori/jabatan'],
-      queryFn: async () => await fetcher.get('/kategori/jabatan'),
+      queryKey: ['common/jabatan'],
+      queryFn: async () => await fetcher.get('/common/jabatan'),
    })
 
    const register = useMutation({

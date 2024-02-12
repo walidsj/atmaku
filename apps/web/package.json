@@ -1,6 +1,7 @@
 {
-   "name": "@atmaku/client",
+   "name": "web",
    "type": "module",
+   "private": true,
    "scripts": {
       "dev": "vite --host 0.0.0.0",
       "build": "tsc && vite build",

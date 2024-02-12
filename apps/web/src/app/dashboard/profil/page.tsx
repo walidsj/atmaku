@@ -1,22 +1,21 @@
 import { CardSkeleton } from '@/components/card-skeleton'
+import DashboardLayout from '@/components/dashboard-layout'
 import { Card, CardContent } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import useAuth from '@/lib/auth'
 
-export default function ProfilSaya() {
-   const { user, isLoading } = useAuth()
+export default function Profil() {
+   const { user } = useAuth()
 
    return (
-      <div>
-         <div className="p-6">
-            <h2 className="text-2xl font-bold tracking-tight">Profil Saya</h2>
-            <p className="text-sm text-gray-600">Informasi profil pengguna</p>
-         </div>
-
+      <DashboardLayout
+         title="Profil Saya"
+         description="Informasi profil pengguna"
+      >
          {user ? (
             <Card>
-               <CardContent className="pt-6">
-                  <Table>
+               <CardContent className="p-5">
+                  <Table className="max-w-xl">
                      <TableBody>
                         <TableRow>
                            <TableCell className="font-medium">
@@ -55,8 +54,8 @@ export default function ProfilSaya() {
                </CardContent>
             </Card>
          ) : (
-            isLoading && <CardSkeleton />
+            <CardSkeleton />
          )}
-      </div>
+      </DashboardLayout>
    )
 }

@@ -4,15 +4,19 @@ import { useCookies } from 'react-cookie'
 
 const useAuth = () => {
    const fetcher = axios()
+   const [_cookies, _setCookie, removeCookie] = useCookies(['token'])
 
    const user = useQuery({
-      queryKey: ['auth/profile'],
-      queryFn: () => fetcher.get('/auth/profile'),
+      queryKey: ['/auth/profil'],
+      queryFn: () => fetcher.get('/auth/profil').then((res) => res.data),
    })
 
    return {
-      user: user.data?.data.user || null,
+      user: user?.data?.user || null,
       isLoading: user.isLoading,
+      signOut: () => {
+         removeCookie('token')
+      },
    }
 }
 

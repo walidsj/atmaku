@@ -6,18 +6,10 @@ import { validator } from 'hono/validator'
 import * as bcrypt from 'bcrypt'
 import { jwt, sign } from 'hono/jwt'
 
-const router = new Hono()
+const app = new Hono()
 
-router.get('/', async (c) => {
-   return c.json({ message: 'Hello Hono!' })
-})
-
-router.get('/kategori/jabatan', async (c) => {
-   return c.json(jabatan)
-})
-
-router.get(
-   '/auth/profile',
+app.get(
+   '/profil',
    jwt({
       secret: process.env.SECRET_KEY as string,
    }),
@@ -45,8 +37,114 @@ router.get(
    }
 )
 
-router.post(
-   '/auth/login',
+app.put(
+   '/profil',
+   jwt({
+      secret: process.env.SECRET_KEY as string,
+   }),
+   validator('json', async (value, c) => {
+      const payload = c.get('jwtPayload')
+      const user = await prisma.user.findUnique({
+         where: {
+            id: payload.sub,
+         },
+      })
+
+      if (!user) {
+         return c.json({ message: 'User tidak ditemukan' }, 404)
+      }
+
+      const parsed = await z
+         .object({
+            nama: z.string(),
+            jabatan: z.string().refine((val) => {
+               return jabatan.find((j) => j.value === val)
+            }),
+            email: z
+               .string()
+               .email()
+               .refine(async (email) => {
+                  const existing = await prisma.user.findUnique({
+                     where: {
+                        email,
+                     },
+                  })
+
+                  if (existing && existing.id !== user.id) {
+                     return false
+                  }
+
+                  return true
+               }, 'Email sudah terdaftar'),
+            telepon: z
+               .string()
+               .min(9)
+               .max(13)
+               .refine(async (telepon) => {
+                  const existing = await prisma.user.findUnique({
+                     where: {
+                        telepon,
+                     },
+                  })
+
+                  if (existing && existing.id !== user.id) {
+                     return false
+                  }
+
+                  return true
+               }, 'No. Handphone sudah terdaftar'),
+         })
+         .spa(value)
+      if (!parsed.success) {
+         return c.json(
+            {
+               message: 'Data yang diinput tidak valid',
+               errors: parsed.error.flatten().fieldErrors,
+            },
+            422
+         )
+      }
+      return parsed.data
+   }),
+   async (c) => {
+      const payload = c.get('jwtPayload')
+      const existing = await prisma.user.findUnique({
+         where: {
+            id: payload.sub,
+         },
+      })
+
+      if (!existing) {
+         return c.json({ message: 'User tidak ditemukan' }, 404)
+      }
+
+      const body = c.req.valid('json')
+
+      const user = await prisma.user.update({
+         where: {
+            id: existing.id,
+         },
+         data: {
+            nama: body.nama,
+            email: body.email,
+            jabatan: body.jabatan,
+            telepon: body.telepon,
+         },
+         select: {
+            id: true,
+            nama: true,
+            email: true,
+            jabatan: true,
+            telepon: true,
+         },
+      })
+
+      return c.json({ message: 'Profil berhasil diubah', user })
+   }
+)
+
+app.post(
+   '/login',
    validator('json', async (value, c) => {
       const parsed = await z
          .object({
@@ -100,8 +198,8 @@ router.post(
    }
 )
 
-router.post(
-   '/auth/register',
+app.post(
+   '/register',
    validator('json', async (value, c) => {
       const parsed = await z
          .object({
@@ -161,4 +259,4 @@ router.post(
    }
 )
 
-export default router
+export default app

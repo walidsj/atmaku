@@ -5,11 +5,12 @@
       "build": "turbo build",
       "dev": "turbo dev",
       "lint": "turbo lint",
-      "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
-      "@client": "pnpm --filter @atmaku/client",
-      "@api": "pnpm --filter @atmaku/api",
-      "add:ui": "pnpm --filter @atmaku/client add:shadcn-ui",
-      "prisma": "pnpm --filter @atmaku/api exec prisma"
+      "format": "prettier --write \"**/*.{ts,tsx,md,json,yaml}\"",
+      "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf */**/node_modules && rm -rf dist && rm -rf */**/dist",
+      "web": "pnpm --filter web",
+      "api": "pnpm --filter api",
+      "add:ui": "pnpm --filter web add:shadcn-ui",
+      "prisma": "pnpm --filter api exec prisma"
    },
    "devDependencies": {
       "prettier": "^3.1.1",
