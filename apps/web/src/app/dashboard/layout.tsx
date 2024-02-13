@@ -51,12 +51,12 @@ export default function DashboardLayout() {
                            <MenubarItem>Dashboard</MenubarItem>
                         </Link>
                         <MenubarSeparator />
-                        <Link to="/profil">
+                        <Link to="/dashboard/profil">
                            <MenubarItem>Profil Saya</MenubarItem>
                         </Link>
                         <MenubarSubTrigger>Pengaturan Akun</MenubarSubTrigger>
                         <MenubarSubContent>
-                           <Link to="/profil/edit">
+                           <Link to="/dashboard/profil/edit">
                               <MenubarItem>Edit Profil</MenubarItem>
                            </Link>
                         </MenubarSubContent>
@@ -103,7 +103,9 @@ export default function DashboardLayout() {
                   <MenubarItem>Pengguna</MenubarItem>
                   <MenubarItem>Pegawai</MenubarItem>
                   <MenubarSeparator />
-                  <MenubarItem>Kode Rekening</MenubarItem>
+                  <Link to="/dashboard/pengaturan/kode-rekening">
+                     <MenubarItem>Kode Rekening</MenubarItem>
+                  </Link>
                </MenubarContent>
             </MenubarMenu>
          </Menubar>
