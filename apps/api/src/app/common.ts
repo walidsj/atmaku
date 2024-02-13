@@ -106,18 +106,16 @@ app.get(
                : 0
          )
 
+         const start = page
+            ? limit
+               ? (parseInt(page) - 1) * parseInt(limit) + 1
+               : (parseInt(page) - 1) * 10 + 1
+            : 0 + 1
+
          return c.json({
             data: slicedData,
-            start: page
-               ? limit
-                  ? (parseInt(page) - 1) * parseInt(limit) + 1
-                  : (parseInt(page) - 1) * 10 + 1
-               : 0 + 1,
-            end: page
-               ? limit
-                  ? (parseInt(page) - 1) * parseInt(limit) + parseInt(limit)
-                  : (parseInt(page) - 1) * 10 + 10
-               : 0 + 1,
+            start,
+            end: start + slicedData.length - 1,
             total: levelData.length,
             totalFiltered:
                levelData.length == filteredData.length

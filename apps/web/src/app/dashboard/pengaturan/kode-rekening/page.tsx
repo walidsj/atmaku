@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import {
    Pagination,
    PaginationContent,
+   PaginationEllipsis,
    PaginationItem,
    PaginationLink,
    PaginationNext,
@@ -28,7 +29,6 @@ import {
 } from '@/components/ui/select'
 import axios from '@/lib/axios'
 import { useQuery } from '@tanstack/react-query'
-import { Fragment, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 interface Rekening {
@@ -41,6 +41,7 @@ export default function KodeRekening() {
    const [searchParams, setSearchParams] = useSearchParams({
       level: '1',
       page: '1',
+      limit: '10',
    })
 
    const rekening = useQuery({
@@ -69,34 +70,65 @@ export default function KodeRekening() {
       >
          <Card>
             <CardContent className="p-5 space-y-3">
-               <Select
-                  value={searchParams.get('level') as string}
-                  onValueChange={(value) =>
-                     setSearchParams((prev) => ({
-                        ...prev,
-                        level: value,
-                        page: '1',
-                     }))
-                  }
-               >
-                  <SelectTrigger className="w-96">
-                     <SelectValue placeholder="Pilih Klasifikasi, Kodefikasi dan Nomenklatur Rekening" />
-                  </SelectTrigger>
-                  <SelectContent>
-                     <SelectGroup>
-                        <SelectItem value="1">1. Akun</SelectItem>
-                        <SelectItem value="2">2. Kelompok</SelectItem>
-                        <SelectItem value="3">3. Jenis</SelectItem>
-                        <SelectItem value="4">4. Objek</SelectItem>
-                        <SelectItem value="5">5. Rincian Objek</SelectItem>
-                        <SelectItem value="6">6. Sub Rincian Objek</SelectItem>
-                     </SelectGroup>
-                  </SelectContent>
-               </Select>
+               <div className="flex space-x-3">
+                  <Select
+                     value={searchParams.get('limit') as string}
+                     onValueChange={(value) =>
+                        setSearchParams((prev) => ({
+                           ...prev,
+                           limit: value,
+                           level: prev.get('level') as string,
+                           page: '1',
+                        }))
+                     }
+                  >
+                     <SelectTrigger className="w-20">
+                        <SelectValue placeholder="Tampilkan" />
+                     </SelectTrigger>
+                     <SelectContent>
+                        <SelectGroup>
+                           <SelectItem value="5">5</SelectItem>
+                           <SelectItem value="10">10</SelectItem>
+                           <SelectItem value="25">25</SelectItem>
+                           <SelectItem value="50">25</SelectItem>
+                           <SelectItem value="75">75</SelectItem>
+                           <SelectItem value="100">100</SelectItem>
+                        </SelectGroup>
+                     </SelectContent>
+                  </Select>
+                  <Select
+                     value={searchParams.get('level') as string}
+                     onValueChange={(value) =>
+                        setSearchParams((prev) => ({
+                           ...prev,
+                           level: value,
+                           page: '1',
+                           limit: prev.get('limit') as string,
+                        }))
+                     }
+                  >
+                     <SelectTrigger className="w-96">
+                        <SelectValue placeholder="Pilih Klasifikasi, Kodefikasi dan Nomenklatur Rekening" />
+                     </SelectTrigger>
+                     <SelectContent>
+                        <SelectGroup>
+                           <SelectItem value="1">1. Akun</SelectItem>
+                           <SelectItem value="2">2. Kelompok</SelectItem>
+                           <SelectItem value="3">3. Jenis</SelectItem>
+                           <SelectItem value="4">4. Objek</SelectItem>
+                           <SelectItem value="5">5. Rincian Objek</SelectItem>
+                           <SelectItem value="6">
+                              6. Sub Rincian Objek
+                           </SelectItem>
+                        </SelectGroup>
+                     </SelectContent>
+                  </Select>
+               </div>
+
                {rekening.data && (
-                  <Fragment>
+                  <>
                      <Table className="border border-gray-200">
-                        <TableHeader>
+                        <TableHeader className="bg-gray-100">
                            <TableRow>
                               <TableHead className="font-semibold w-[200px]">
                                  Kode
@@ -148,10 +180,33 @@ export default function KodeRekening() {
                                                 prev.get('page') as string
                                              ) - 1
                                           ),
+                                          limit: prev.get('limit') as string,
                                        }))
                                     }
                                  />
                               </PaginationItem>
+                           )}
+                           {parseInt(searchParams.get('page') as string) - 2 >
+                              1 && (
+                              <>
+                                 <PaginationItem>
+                                    <PaginationLink
+                                       className="cursor-pointer"
+                                       onClick={() =>
+                                          setSearchParams((prev) => ({
+                                             level: prev.get('level') as string,
+                                             page: String(1),
+                                             limit: prev.get('limit') as string,
+                                          }))
+                                       }
+                                    >
+                                       1
+                                    </PaginationLink>
+                                 </PaginationItem>
+                                 <PaginationItem>
+                                    <PaginationEllipsis />
+                                 </PaginationItem>
+                              </>
                            )}
                            {Array.from(
                               {
@@ -187,6 +242,7 @@ export default function KodeRekening() {
                                                      3
                                                 : page
                                           ),
+                                          limit: prev.get('limit') as string,
                                        }))
                                     }
                                  >
@@ -235,6 +291,7 @@ export default function KodeRekening() {
                                                    ) as string
                                                 )
                                           ),
+                                          limit: prev.get('limit') as string,
                                        }))
                                     }
                                  >
@@ -245,6 +302,28 @@ export default function KodeRekening() {
                                  </PaginationLink>
                               </PaginationItem>
                            ))}
+                           {rekening.data.data.pages - 2 >
+                              parseInt(searchParams.get('page') as string) && (
+                              <>
+                                 <PaginationItem>
+                                    <PaginationEllipsis />
+                                 </PaginationItem>
+                                 <PaginationLink
+                                    className="cursor-pointer"
+                                    onClick={() =>
+                                       setSearchParams((prev) => ({
+                                          level: prev.get('level') as string,
+                                          page: String(
+                                             rekening.data.data.pages
+                                          ),
+                                          limit: prev.get('limit') as string,
+                                       }))
+                                    }
+                                 >
+                                    {rekening.data.data.pages}
+                                 </PaginationLink>
+                              </>
+                           )}
                            {rekening.data.data.pages >
                               parseInt(searchParams.get('page') as string) && (
                               <PaginationItem>
@@ -258,6 +337,7 @@ export default function KodeRekening() {
                                                 prev.get('page') as string
                                              ) + 1
                                           ),
+                                          limit: prev.get('limit') as string,
                                        }))
                                     }
                                  />
@@ -265,7 +345,7 @@ export default function KodeRekening() {
                            )}
                         </PaginationContent>
                      </Pagination>
-                  </Fragment>
+                  </>
                )}
             </CardContent>
          </Card>
