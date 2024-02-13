@@ -68,6 +68,7 @@ app.get(
          '3': rekeningLevel3,
          '4': rekeningLevel4,
          '5': rekeningLevel5,
+         // @ts-ignore
          '6': rekeningLevel6,
       }
 
