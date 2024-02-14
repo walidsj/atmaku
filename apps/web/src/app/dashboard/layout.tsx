@@ -80,22 +80,28 @@ export default function DashboardLayout() {
                </AlertDialogContent>
             </AlertDialog>
             <MenubarMenu>
-               <MenubarTrigger>Pengaturan</MenubarTrigger>
+               <MenubarTrigger>Penganggaran</MenubarTrigger>
                <MenubarContent>
-                  <MenubarSub>
-                     <MenubarSubTrigger>Rekening Bank</MenubarSubTrigger>
-                     <MenubarSubContent>
-                        <MenubarItem>RKU-BLUD</MenubarItem>
-                        <MenubarItem>Pengeluaran BLUD</MenubarItem>
-                        <MenubarItem>Penerimaan BLUD</MenubarItem>
-                     </MenubarSubContent>
-                  </MenubarSub>
+                  {/* <MenubarItem>Rekening Bank</MenubarItem>
                   <MenubarItem>Besaran UP</MenubarItem>
                   <MenubarSeparator />
-                  <MenubarItem>Perangkat Daerah</MenubarItem>
                   <MenubarItem>Pengguna</MenubarItem>
                   <MenubarItem>Pegawai</MenubarItem>
+                  <MenubarSeparator /> */}
+                  <Link to="/dashboard/pengaturan/kode-rekening">
+                     <MenubarItem>Rincian Belanja</MenubarItem>
+                  </Link>
+               </MenubarContent>
+            </MenubarMenu>
+            <MenubarMenu>
+               <MenubarTrigger>Pengaturan</MenubarTrigger>
+               <MenubarContent>
+                  {/* <MenubarItem>Rekening Bank</MenubarItem>
+                  <MenubarItem>Besaran UP</MenubarItem>
                   <MenubarSeparator />
+                  <MenubarItem>Pengguna</MenubarItem>
+                  <MenubarItem>Pegawai</MenubarItem>
+                  <MenubarSeparator /> */}
                   <Link to="/dashboard/pengaturan/kode-rekening">
                      <MenubarItem>Kode Rekening</MenubarItem>
                   </Link>

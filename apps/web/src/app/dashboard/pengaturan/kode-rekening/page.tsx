@@ -12,7 +12,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import axios from '@/lib/axios'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
 import { Input } from '@/components/ui/input'
 
@@ -52,6 +52,7 @@ export default function KodeRekening() {
                kode: searchParams.get('kode'),
             },
          }),
+      placeholderData: keepPreviousData,
    })
 
    return (
@@ -251,6 +252,7 @@ export default function KodeRekening() {
                                           ),
                                           limit: prev.get('limit') as string,
                                           q: prev.get('q') as string,
+                                          kode: prev.get('kode') as string,
                                        }))
                                     }
                                  >
@@ -279,6 +281,7 @@ export default function KodeRekening() {
                                           page: String(page + parseInt(searchParams.get('page') as string)),
                                           limit: prev.get('limit') as string,
                                           q: prev.get('q') as string,
+                                          kode: prev.get('kode') as string,
                                        }))
                                     }
                                  >
@@ -299,6 +302,7 @@ export default function KodeRekening() {
                                           page: String(rekening.data.data.pages),
                                           limit: prev.get('limit') as string,
                                           q: prev.get('q') as string,
+                                          kode: prev.get('kode') as string,
                                        }))
                                     }
                                  >
@@ -316,6 +320,7 @@ export default function KodeRekening() {
                                           page: String(parseInt(prev.get('page') as string) + 1),
                                           limit: prev.get('limit') as string,
                                           q: prev.get('q') as string,
+                                          kode: prev.get('kode') as string,
                                        }))
                                     }
                                  />

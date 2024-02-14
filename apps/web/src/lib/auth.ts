@@ -1,5 +1,5 @@
 import axios from '@/lib/axios'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useCookies } from 'react-cookie'
 
 const useAuth = () => {
@@ -9,6 +9,7 @@ const useAuth = () => {
    const user = useQuery({
       queryKey: ['/auth/profil'],
       queryFn: () => fetcher.get('/auth/profil').then((res) => res.data),
+      placeholderData: keepPreviousData,
    })
 
    return {
