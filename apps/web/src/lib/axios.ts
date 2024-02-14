@@ -15,8 +15,7 @@ const axios = () => {
    const navigate = useNavigate()
 
    if (cookies.token) {
-      instance.defaults.headers.common['Authorization'] =
-         `Bearer ${cookies.token}`
+      instance.defaults.headers.common['Authorization'] = `Bearer ${cookies.token}`
    }
 
    instance.interceptors.response.use(

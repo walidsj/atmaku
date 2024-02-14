@@ -1,24 +1,11 @@
 import { CardSkeleton } from '@/components/card-skeleton'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import {
-   Form,
-   FormControl,
-   FormField,
-   FormItem,
-   FormLabel,
-   FormMessage,
-} from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import {
-   Select,
-   SelectContent,
-   SelectItem,
-   SelectTrigger,
-   SelectValue,
-} from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { FiLoader } from 'react-icons/fi'
 import { toast } from 'sonner'
@@ -92,18 +79,12 @@ export default function EditProfil() {
    }
 
    return (
-      <DashboardLayout
-         title="Edit Profil"
-         description="Perbarui informasi profil pengguna"
-      >
+      <DashboardLayout title="Edit Profil" description="Perbarui informasi profil pengguna">
          {user ? (
             <Card>
                <CardContent className="p-5">
                   <Form {...form}>
-                     <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-3 max-w-xl"
-                     >
+                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 max-w-xl">
                         <FormField
                            control={form.control}
                            name="nama"
@@ -149,30 +130,18 @@ export default function EditProfil() {
                            render={({ field }) => (
                               <FormItem>
                                  <FormLabel>Jabatan</FormLabel>
-                                 <Select
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value}
-                                    value={field.value}
-                                 >
+                                 <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
                                     <FormControl>
                                        <SelectTrigger>
                                           <SelectValue placeholder="Pilih Jabatan..." />
                                        </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                       {jabatan.data?.data.map(
-                                          (item: {
-                                             value: string
-                                             label: string
-                                          }) => (
-                                             <SelectItem
-                                                key={item.value}
-                                                value={item.value}
-                                             >
-                                                {item.label}
-                                             </SelectItem>
-                                          )
-                                       )}
+                                       {jabatan.data?.data.map((item: { value: string; label: string }) => (
+                                          <SelectItem key={item.value} value={item.value}>
+                                             {item.label}
+                                          </SelectItem>
+                                       ))}
                                     </SelectContent>
                                  </Select>
                                  <FormMessage />
@@ -180,9 +149,7 @@ export default function EditProfil() {
                            )}
                         />
                         <Button type="submit" className="w-full">
-                           {form.formState.isSubmitting && (
-                              <FiLoader className="animate-spin h-4 w-4 mr-2" />
-                           )}
+                           {form.formState.isSubmitting && <FiLoader className="animate-spin h-4 w-4 mr-2" />}
                            Simpan
                         </Button>
                      </form>

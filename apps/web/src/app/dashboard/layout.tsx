@@ -39,11 +39,7 @@ export default function DashboardLayout() {
                         <AvatarImage src="/avatar.jpg" />
                         <AvatarFallback>X</AvatarFallback>
                      </Avatar>
-                     {user ? (
-                        user.nama
-                     ) : (
-                        <Skeleton className="w-28 h-4 rounded-lg" />
-                     )}
+                     {user ? user.nama : <Skeleton className="w-28 h-4 rounded-lg" />}
                   </MenubarTrigger>
                   <MenubarContent>
                      <MenubarSub>
@@ -72,12 +68,9 @@ export default function DashboardLayout() {
                </MenubarMenu>
                <AlertDialogContent>
                   <AlertDialogHeader>
-                     <AlertDialogTitle>
-                        Apakah Anda yakin keluar?
-                     </AlertDialogTitle>
+                     <AlertDialogTitle>Apakah Anda yakin keluar?</AlertDialogTitle>
                      <AlertDialogDescription>
-                        Anda harus login kembali untuk melanjutkan menggunakan
-                        Aplikasi SiMKU.
+                        Anda harus login kembali untuk melanjutkan menggunakan Aplikasi SiMKU.
                      </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>

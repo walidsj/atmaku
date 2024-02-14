@@ -1,13 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-   Form,
-   FormControl,
-   FormField,
-   FormItem,
-   FormLabel,
-   FormMessage,
-} from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -74,10 +67,7 @@ export default function Login() {
          </CardHeader>
          <CardContent>
             <Form {...form}>
-               <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-3"
-               >
+               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
                   <FormField
                      control={form.control}
                      name="email"
@@ -85,12 +75,7 @@ export default function Login() {
                         <FormItem>
                            <FormLabel>Alamat Email</FormLabel>
                            <FormControl>
-                              <Input
-                                 type="email"
-                                 {...field}
-                                 autoFocus
-                                 placeholder="Alamat Email"
-                              />
+                              <Input type="email" {...field} autoFocus placeholder="Alamat Email" />
                            </FormControl>
                            <FormMessage />
                         </FormItem>
@@ -103,20 +88,14 @@ export default function Login() {
                         <FormItem>
                            <FormLabel>Password</FormLabel>
                            <FormControl>
-                              <Input
-                                 type="password"
-                                 {...field}
-                                 placeholder="Password"
-                              />
+                              <Input type="password" {...field} placeholder="Password" />
                            </FormControl>
                            <FormMessage />
                         </FormItem>
                      )}
                   />
                   <Button type="submit" size="xl" className="w-full">
-                     {form.formState.isSubmitting && (
-                        <FiLoader className="animate-spin h-4 w-4 mr-2" />
-                     )}
+                     {form.formState.isSubmitting && <FiLoader className="animate-spin h-4 w-4 mr-2" />}
                      Login
                   </Button>
                   <span>

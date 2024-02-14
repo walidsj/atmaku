@@ -35,9 +35,7 @@ export default function DashboardLayout({
                         <Fragment key={index}>
                            <li className="text-gray-400">/</li>
                            <li className="font-semibold">
-                              <Link to={to}>
-                                 {segment.replace(/-/g, ' ').toUpperCase()}
-                              </Link>
+                              <Link to={to}>{segment.replace(/-/g, ' ').toUpperCase()}</Link>
                            </li>
                         </Fragment>
                      )

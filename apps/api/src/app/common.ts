@@ -90,16 +90,10 @@ app.get(
             })
          }
 
-         const pages = Math.ceil(
-            filteredData.length / (limit ? parseInt(limit) : 10)
-         )
+         const pages = Math.ceil(filteredData.length / (limit ? parseInt(limit) : 10))
 
          const slicedData = filteredData.slice(
-            page
-               ? limit
-                  ? (parseInt(page) - 1) * parseInt(limit)
-                  : (parseInt(page) - 1) * 10
-               : 0,
+            page ? (limit ? (parseInt(page) - 1) * parseInt(limit) : (parseInt(page) - 1) * 10) : 0,
             page
                ? limit
                   ? (parseInt(page) - 1) * parseInt(limit) + parseInt(limit)
@@ -118,20 +112,9 @@ app.get(
             start,
             end: start + slicedData.length - 1,
             total: levelData.length,
-            totalFiltered:
-               levelData.length == filteredData.length
-                  ? null
-                  : filteredData.length,
-            nextPage: page
-               ? pages > parseInt(page)
-                  ? parseInt(page) + 1
-                  : null
-               : null,
-            prevPage: page
-               ? parseInt(page) > 1
-                  ? parseInt(page) - 1
-                  : null
-               : null,
+            totalFiltered: levelData.length == filteredData.length ? null : filteredData.length,
+            nextPage: page ? (pages > parseInt(page) ? parseInt(page) + 1 : null) : null,
+            prevPage: page ? (parseInt(page) > 1 ? parseInt(page) - 1 : null) : null,
             pages,
          })
       }

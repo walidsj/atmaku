@@ -182,10 +182,7 @@ app.post(
          return c.json({ message: 'Email atau password salah' }, 422)
       }
 
-      const token = await sign(
-         { sub: user.id, email: user.email },
-         process.env.SECRET_KEY as string
-      )
+      const token = await sign({ sub: user.id, email: user.email }, process.env.SECRET_KEY as string)
 
       return c.json({
          message: `Login sukses`,

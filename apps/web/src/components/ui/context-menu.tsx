@@ -1,10 +1,6 @@
 import * as React from 'react'
 import * as ContextMenuPrimitive from '@radix-ui/react-context-menu'
-import {
-   CheckIcon,
-   ChevronRightIcon,
-   DotFilledIcon,
-} from '@radix-ui/react-icons'
+import { CheckIcon, ChevronRightIcon, DotFilledIcon } from '@radix-ui/react-icons'
 
 import { cn } from '@/lib/utils'
 
@@ -112,8 +108,7 @@ const ContextMenuCheckboxItem = React.forwardRef<
       {children}
    </ContextMenuPrimitive.CheckboxItem>
 ))
-ContextMenuCheckboxItem.displayName =
-   ContextMenuPrimitive.CheckboxItem.displayName
+ContextMenuCheckboxItem.displayName = ContextMenuPrimitive.CheckboxItem.displayName
 
 const ContextMenuRadioItem = React.forwardRef<
    React.ElementRef<typeof ContextMenuPrimitive.RadioItem>,
@@ -145,11 +140,7 @@ const ContextMenuLabel = React.forwardRef<
 >(({ className, inset, ...props }, ref) => (
    <ContextMenuPrimitive.Label
       ref={ref}
-      className={cn(
-         'px-2 py-1.5 text-sm font-semibold text-gray-950 dark:text-gray-50',
-         inset && 'pl-8',
-         className
-      )}
+      className={cn('px-2 py-1.5 text-sm font-semibold text-gray-950 dark:text-gray-50', inset && 'pl-8', className)}
       {...props}
    />
 ))
@@ -167,18 +158,9 @@ const ContextMenuSeparator = React.forwardRef<
 ))
 ContextMenuSeparator.displayName = ContextMenuPrimitive.Separator.displayName
 
-const ContextMenuShortcut = ({
-   className,
-   ...props
-}: React.HTMLAttributes<HTMLSpanElement>) => {
+const ContextMenuShortcut = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => {
    return (
-      <span
-         className={cn(
-            'ml-auto text-xs tracking-widest text-gray-500 dark:text-gray-400',
-            className
-         )}
-         {...props}
-      />
+      <span className={cn('ml-auto text-xs tracking-widest text-gray-500 dark:text-gray-400', className)} {...props} />
    )
 }
 ContextMenuShortcut.displayName = 'ContextMenuShortcut'
